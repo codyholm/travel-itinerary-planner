@@ -45,28 +45,28 @@ public class CheckoutServiceImpl implements CheckoutService {
 
         // Validation for customer fields before purchase, returns error message if null.
         if (customer == null) {
-            return new PurchaseResponse("Customer is required.");
+            return PurchaseResponse.error("Customer is required.");
         }
         // Checks input for required strings, returns error message if null or empty.
         if (customer.getFirstName() == null || customer.getFirstName().trim().isEmpty()) {
-            return new PurchaseResponse("First name is required.");
+            return PurchaseResponse.error("First name is required.");
         }
         if (customer.getLastName() == null || customer.getLastName().trim().isEmpty()) {
-            return new PurchaseResponse("Last name is required.");
+            return PurchaseResponse.error("Last name is required.");
         }
         if (customer.getAddress() == null || customer.getAddress().trim().isEmpty()) {
-            return new PurchaseResponse("Address is required.");
+            return PurchaseResponse.error("Address is required.");
         }
         if (customer.getPostal_code() == null || customer.getPostal_code().trim().isEmpty()) {
-            return new PurchaseResponse("Postal code is required.");
+            return PurchaseResponse.error("Postal code is required.");
         }
         if (customer.getPhone() == null || customer.getPhone().trim().isEmpty()) {
-            return new PurchaseResponse("Phone number is required.");
+            return PurchaseResponse.error("Phone number is required.");
         }
 
         // Checks if cartItems is null or empty. If so, return error message.
         if (cartItems == null || cartItems.isEmpty() || cart == null) {
-            return new PurchaseResponse("No items in cart. Unable to place order.");
+            return PurchaseResponse.error("No items in cart. Unable to place order.");
         }
 
         // Sets cart id to null to prepare for update
@@ -95,7 +95,7 @@ public class CheckoutServiceImpl implements CheckoutService {
         cartRepository.save(cart);
 
         // Returns purchase response with order tracking number
-        return new PurchaseResponse(orderTrackingNumber);
+        return PurchaseResponse.success(orderTrackingNumber);
     }
 
     // Helper method to generate an order tracking number

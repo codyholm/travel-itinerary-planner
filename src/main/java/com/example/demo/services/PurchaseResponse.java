@@ -1,19 +1,28 @@
 package com.example.demo.services;
 
-
-import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
 
-@Data
 @Getter
-@Setter
-
 public class PurchaseResponse {
 
-    private String orderTrackingNumber;
+    private final boolean success;
+    private final String orderTrackingNumber;
+    private final String errorMessage;
 
-    public PurchaseResponse(String orderTrackingNumber) {
+    // Private constructor - use static factory methods
+    private PurchaseResponse(boolean success, String orderTrackingNumber, String errorMessage) {
+        this.success = success;
         this.orderTrackingNumber = orderTrackingNumber;
+        this.errorMessage = errorMessage;
+    }
+
+    // Factory method for successful purchase
+    public static PurchaseResponse success(String orderTrackingNumber) {
+        return new PurchaseResponse(true, orderTrackingNumber, null);
+    }
+
+    // Factory method for failed purchase
+    public static PurchaseResponse error(String errorMessage) {
+        return new PurchaseResponse(false, null, errorMessage);
     }
 }

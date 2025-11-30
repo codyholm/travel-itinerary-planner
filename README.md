@@ -1,6 +1,10 @@
 # Vacation Booking Platform
 
+**[Live Demo]() | [GitHub](https://github.com/codyholm/travel-itinerary-planner)**
+
 A full-stack travel itinerary planner for vacation and excursion booking, built with a Spring Boot REST API, Angular frontend, and MySQL for persistent order management.
+
+---
 
 ## Features
 
@@ -12,6 +16,8 @@ A full-stack travel itinerary planner for vacation and excursion booking, built 
 - **Validation & Error Handling** – Comprehensive input validation and clear error messages across all forms.
 - **Sample Data Loaded Automatically** – The backend comes pre-populated with demo vacation packages and customers on startup.
 
+---
+
 ## Tech Stack
 
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?logo=springboot&logoColor=white)
@@ -22,6 +28,8 @@ A full-stack travel itinerary planner for vacation and excursion booking, built 
 - **Backend**: Java, Spring Boot, Spring Data JPA, REST API
 - **Frontend**: Angular, TypeScript, RxJS, Bootstrap
 - **Infrastructure**: MySQL, Maven, Docker
+
+---
 
 ## Key Implementation Details
 
@@ -40,6 +48,8 @@ A full-stack travel itinerary planner for vacation and excursion booking, built 
 - Spring Data JPA/Hibernate handles object-relational mapping.
 - Seed data provided for demo and testing.
 
+---
+
 ## Potential Improvements
 - Add user authentication (register/login) supporting admin and customer roles.
 - Vacation image gallery integration (Unsplash API or uploads).
@@ -47,8 +57,11 @@ A full-stack travel itinerary planner for vacation and excursion booking, built 
 - Add favorites/wishlist functionality and user-provided reviews.
 - Internationalization (multi-language support).
 
+---
+
 ## Author
 
 **Cody Holm**
 
 - GitHub: [@CodyHolm](https://github.com/CodyHolm)
+- Portfolio: [codyholm.com](https://codyholm.com)
