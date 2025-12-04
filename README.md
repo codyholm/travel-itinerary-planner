@@ -29,58 +29,6 @@ A travel itinerary planner for vacation and excursion booking, featuring a Sprin
 
 ---
 
-## Getting Started
-
-### Prerequisites
-- Java 17+
-- Docker & Docker Compose
-
-### Run Locally
-
-1. **Start the database**
-   ```bash
-   docker-compose up -d
-   ```
-
-2. **Start the backend**
-   ```bash
-   ./mvnw spring-boot:run
-   ```
-
-3. **Test the API**
-   - Vacations: http://localhost:8080/api/vacations
-   - Excursions: http://localhost:8080/api/excursions
-   - Countries: http://localhost:8080/api/countries
-   - Checkout: `POST http://localhost:8080/api/checkout/purchase`
-
----
-
-## API Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/vacations` | List all vacation packages |
-| GET | `/api/vacations/{id}` | Get vacation details |
-| GET | `/api/excursions` | List all excursions |
-| GET | `/api/countries` | List all countries |
-| GET | `/api/divisions` | List all divisions (states/provinces) |
-| POST | `/api/checkout/purchase` | Place an order |
-
----
-
-## Project Structure
-
-```
-src/main/java/com/example/demo/
-├── controllers/      # REST endpoints
-├── services/         # Business logic
-├── dao/              # JPA repositories
-├── entities/         # Database models
-├── config/           # Spring configuration
-└── bootstrap/        # Sample data loader
-```
-
----
 
 ## Key Implementation Details
 
