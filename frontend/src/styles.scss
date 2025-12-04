@@ -1,0 +1,100 @@
+// Custom color palette - Travel/Ocean theme
+$primary: #0D7377;
+$secondary: #14FFEC;
+$dark: #212121;
+$light: #F8F9FA;
+$success: #28A745;
+$danger: #DC3545;
+$warning: #FFC107;
+$info: #17A2B8;
+
+// Global styles
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: $light;
+  color: $dark;
+  min-height: 100vh;
+}
+
+// Custom utility classes
+.bg-primary-custom {
+  background-color: $primary !important;
+}
+
+.text-primary-custom {
+  color: $primary !important;
+}
+
+.btn-primary-custom {
+  background-color: $primary;
+  border-color: $primary;
+  color: white;
+
+  &:hover {
+    background-color: darken($primary, 10%);
+    border-color: darken($primary, 10%);
+    color: white;
+  }
+}
+
+.btn-outline-primary-custom {
+  border-color: $primary;
+  color: $primary;
+
+  &:hover {
+    background-color: $primary;
+    color: white;
+  }
+}
+
+// Card styles
+.card {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  }
+}
+
+// Vacation card image
+.vacation-img {
+  height: 200px;
+  object-fit: cover;
+}
+
+// Price styling
+.price {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: $primary;
+}
+
+// Navbar customization
+.navbar-custom {
+  background-color: $primary !important;
+}
+
+// Footer
+.footer {
+  background-color: $dark;
+  color: white;
+  padding: 2rem 0;
+  margin-top: auto;
+}
+
+// Page container
+.page-container {
+  min-height: calc(100vh - 56px);
+  padding-bottom: 2rem;
+}
+
+// Loading spinner
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
