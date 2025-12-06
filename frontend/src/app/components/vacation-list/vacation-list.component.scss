@@ -1,0 +1,37 @@
+.vacation-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  border: none;
+  
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+  }
+}
+
+.vacation-image {
+  height: 250px;
+  object-fit: cover;
+  background-color: #f0f0f0;
+}
+
+.price {
+  color: #0D7377;
+  font-weight: 600;
+}
+
+.card-title {
+  color: #212121;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.btn-primary {
+  background-color: #0D7377;
+  border-color: #0D7377;
+  
+  &:hover {
+    background-color: #0a5a5d;
+    border-color: #0a5a5d;
+  }
+}
