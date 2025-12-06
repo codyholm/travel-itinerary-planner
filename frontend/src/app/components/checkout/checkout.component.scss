@@ -1,0 +1,49 @@
+.sticky-summary {
+  position: sticky;
+  top: 20px;
+}
+
+.summary-image {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.card-header.bg-primary {
+  background-color: #0D7377 !important;
+}
+
+.btn-primary {
+  background-color: #0D7377;
+  border-color: #0D7377;
+  
+  &:hover:not(:disabled) {
+    background-color: #0a5a5d;
+    border-color: #0a5a5d;
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.text-primary {
+  color: #0D7377 !important;
+}
+
+.form-control, .form-select {
+  &:focus {
+    border-color: #0D7377;
+    box-shadow: 0 0 0 0.2rem rgba(13, 115, 119, 0.25);
+  }
+}
+
+.invalid-feedback {
+  display: none;
+}
+
+.is-invalid ~ .invalid-feedback {
+  display: block;
+}

@@ -1,0 +1,42 @@
+.cart-item {
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  img {
+    max-height: 150px;
+    object-fit: cover;
+  }
+}
+
+.sticky-summary {
+  position: sticky;
+  top: 20px;
+}
+
+.card-header.bg-primary {
+  background-color: #0D7377 !important;
+}
+
+.btn-primary {
+  background-color: #0D7377;
+  border-color: #0D7377;
+  
+  &:hover {
+    background-color: #0a5a5d;
+    border-color: #0a5a5d;
+  }
+}
+
+.text-primary {
+  color: #0D7377 !important;
+}
+
+.excursions-summary {
+  ul {
+    max-height: 150px;
+    overflow-y: auto;
+  }
+}

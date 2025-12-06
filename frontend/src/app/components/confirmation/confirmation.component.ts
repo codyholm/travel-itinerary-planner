@@ -1,15 +1,28 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-confirmation',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <div class="container py-4">
-      <h1>Order Confirmed!</h1>
-      <p>Thank you for your order.</p>
-    </div>
-  `
+  templateUrl: './confirmation.component.html',
+  styleUrl: './confirmation.component.scss'
 })
-export class ConfirmationComponent {}
+export class ConfirmationComponent implements OnInit {
+  orderTrackingNumber: string | null = null;
+
+  constructor(private router: Router) {
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras?.state) {
+      this.orderTrackingNumber = navigation.extras.state['orderTrackingNumber'];
+    }
+  }
+
+  ngOnInit(): void {
+    // If no tracking number, redirect to home
+    if (!this.orderTrackingNumber) {
+      this.router.navigate(['/']);
+    }
+  }
+}
