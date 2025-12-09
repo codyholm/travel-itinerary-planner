@@ -1,51 +1,70 @@
-# Vacation Booking Platform
+# Travel Itinerary Planner
 
-**[GitHub](https://github.com/codyholm/travel-itinerary-planner)**
-
-A travel itinerary planner for vacation and excursion booking, featuring a Spring Boot REST API backend with MySQL for persistent order management.
+A full-stack vacation booking application built with Spring Boot and Angular.
 
 ---
 
 ## Features
 
-- **Vacation Packages** – Browse vacation packages from multiple destinations with images and pricing.
-- **Excursions & Add-ons** – Each vacation includes selectable excursions to customize trips.
-- **Shopping Cart** – Support for multiple vacation packages and excursions per booking.
-- **Customer Checkout** – Checkout process with order tracking number generation.
-- **Validation & Error Handling** – Input validation with clear error responses.
-- **Sample Data** – Database comes pre-populated with demo vacations, excursions, and customers.
+- **Browse Vacations** - Responsive grid of 8 vacation packages with images
+- **Excursion Selection** - Add optional excursions to each vacation with live pricing
+- **Shopping Cart** - Manage selected vacations and excursions
+- **Checkout** - Reactive form with country/state dropdowns and validation
+- **Order Confirmation** - Tracking number generation after successful purchase
 
 ---
 
 ## Tech Stack
 
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?logo=springboot&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)
+**Backend:**
+- Spring Boot 3.4.5 (Java 17)
+- Spring Data JPA & REST
+- MySQL 8.0 (Docker)
+- Jakarta Bean Validation
 
-- **Backend**: Java 17, Spring Boot 3.4, Spring Data JPA, Spring Data REST
-- **Database**: MySQL 8.0 (via Docker)
-- **Build**: Maven
+**Frontend:**
+- Angular 17 (standalone components)
+- Bootstrap 5
+- TypeScript (strict mode)
+- RxJS (reactive state management)
 
----
+## Setup & Run
 
+### Prerequisites
+- Docker Desktop installed
+- Node.js 18+ and npm
+- Java 17+
 
-## Key Implementation Details
+### Backend
 
-### Architecture
-- **Controllers**: REST endpoints for checkout operations
-- **Services**: Business logic with transactional order processing
-- **Repositories**: Spring Data JPA with auto-generated CRUD endpoints
-- **Entities**: JPA models with proper relationships (OneToMany, ManyToMany)
+1. Start MySQL:
+```bash
+docker-compose up -d
+```
 
-### Data Model
-- **Vacation** → has many **Excursions**
-- **Customer** → belongs to **Division** → belongs to **Country**
-- **Cart** → has many **CartItems** → each links a Vacation + selected Excursions
+2. Run Spring Boot:
+```bash
+./mvnw.cmd spring-boot:run
+```
 
----
+Backend runs at `http://localhost:8080/api`
 
-## Potential Improvements
+### Frontend
+
+1. Install dependencies:
+```bash
+cd frontend
+npm install
+```
+
+2. Start development server:
+```bash
+npm start
+```
+
+Frontend runs at `http://localhost:4200`
+
+## Usage
 - Add Angular frontend for complete user experience
 - User authentication (register/login) with admin and customer roles
 - Order history viewing
