@@ -1,105 +1,181 @@
 package com.example.demo.services;
 
-
-import com.example.demo.dao.CartItemRepository;
 import com.example.demo.dao.CartRepository;
-import com.example.demo.entities.Cart;
-import com.example.demo.entities.CartItem;
-import com.example.demo.entities.Customer;
-import com.example.demo.entities.StatusType;
+import com.example.demo.dao.DivisionRepository;
+import com.example.demo.dao.ExcursionRepository;
+import com.example.demo.dao.VacationRepository;
+import com.example.demo.dto.CartItemDTO;
+import com.example.demo.dto.PurchaseDTO;
+import com.example.demo.entities.*;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-
-//Service implementation for checkout service
+/**
+ * Service implementation for checkout operations.
+ * Validates division-country linkage, excursion-vacation linkage,
+ * computes totals server-side, and provides structured error responses.
+ */
 @Service
 public class CheckoutServiceImpl implements CheckoutService {
 
-    // Declaration of repositories used
-    private final CartRepository cartRepository;
-    private final CartItemRepository cartItemRepository;
+    private static final Logger log = LoggerFactory.getLogger(CheckoutServiceImpl.class);
 
-    // Constructor to inject repositories
-    @Autowired
-    public CheckoutServiceImpl(CartRepository cartRepository,
-                               CartItemRepository cartItemRepository)
-    {
+    private final CartRepository cartRepository;
+    private final DivisionRepository divisionRepository;
+    private final VacationRepository vacationRepository;
+    private final ExcursionRepository excursionRepository;
+
+    public CheckoutServiceImpl(
+            CartRepository cartRepository,
+            DivisionRepository divisionRepository,
+            VacationRepository vacationRepository,
+            ExcursionRepository excursionRepository) {
         this.cartRepository = cartRepository;
-        this.cartItemRepository = cartItemRepository;
+        this.divisionRepository = divisionRepository;
+        this.vacationRepository = vacationRepository;
+        this.excursionRepository = excursionRepository;
     }
 
     @Override
     @Transactional
-    public PurchaseResponse placeOrder(Purchase purchase) {
-
-        // Variables for Cart and Customer objects
-        Cart cart = purchase.getCart();
-        Customer customer = purchase.getCustomer();
-
-        // Adds purchase items to CartItem set.
-        Set<CartItem> cartItems = purchase.getCartItems();
-
-        // Validation for customer fields before purchase, returns error message if null.
-        if (customer == null) {
-            return PurchaseResponse.error("Customer is required.");
-        }
-        // Checks input for required strings, returns error message if null or empty.
-        if (customer.getFirstName() == null || customer.getFirstName().trim().isEmpty()) {
-            return PurchaseResponse.error("First name is required.");
-        }
-        if (customer.getLastName() == null || customer.getLastName().trim().isEmpty()) {
-            return PurchaseResponse.error("Last name is required.");
-        }
-        if (customer.getAddress() == null || customer.getAddress().trim().isEmpty()) {
-            return PurchaseResponse.error("Address is required.");
-        }
-        if (customer.getPostal_code() == null || customer.getPostal_code().trim().isEmpty()) {
-            return PurchaseResponse.error("Postal code is required.");
-        }
-        if (customer.getPhone() == null || customer.getPhone().trim().isEmpty()) {
-            return PurchaseResponse.error("Phone number is required.");
+    public PurchaseResponse placeOrder(PurchaseDTO purchase) {
+        // Validate division and division-country linkage
+        Division division = divisionRepository.findById(purchase.getCustomer().getDivision().getId())
+                .orElse(null);
+        
+        if (division == null) {
+            log.warn("Division not found: {}", purchase.getCustomer().getDivision().getId());
+            return PurchaseResponse.error("DIVISION_NOT_FOUND", 
+                "Division not found. Please select a valid state/province.");
         }
 
-        // Checks if cartItems is null or empty. If so, return error message.
-        if (cartItems == null || cartItems.isEmpty() || cart == null) {
-            return PurchaseResponse.error("No items in cart. Unable to place order.");
+        // Validate division belongs to specified country
+        Long expectedCountryId = purchase.getCustomer().getDivision().getCountry_id();
+        if (division.getCountry() == null || !division.getCountry().getId().equals(expectedCountryId)) {
+            log.warn("Division {} does not belong to country {}", division.getId(), expectedCountryId);
+            return PurchaseResponse.error("DIVISION_COUNTRY_MISMATCH",
+                "The selected state/province does not belong to the selected country.");
         }
 
-        // Sets cart id to null to prepare for update
-        cart.setId(null);
+        // Build and validate cart items
+        Set<CartItem> cartItems = new HashSet<>();
+        BigDecimal serverComputedTotal = BigDecimal.ZERO;
 
-        // Adds cart items to cart object.
-        cartItems.forEach(cartItem -> cartItem.setCart(cart));
+        for (CartItemDTO itemDTO : purchase.getCartItems()) {
+            Vacation vacation = vacationRepository.findById(itemDTO.getVacation().getId())
+                    .orElse(null);
+            
+            if (vacation == null) {
+                log.warn("Vacation not found: {}", itemDTO.getVacation().getId());
+                return PurchaseResponse.error("VACATION_NOT_FOUND",
+                    "One or more vacations in your cart are no longer available.");
+            }
 
-        // Generate a order tracking number
-        String orderTrackingNumber = generateOrderTrackingNumber();
-        // Message for testing purposes - System.out.println(orderTrackingNumber);
+            // Validate and resolve excursions
+            Set<Excursion> excursions = new HashSet<>();
+            if (itemDTO.getExcursions() != null && !itemDTO.getExcursions().isEmpty()) {
+                Set<Long> excursionIds = itemDTO.getExcursions().stream()
+                        .map(ref -> ref.getId())
+                        .collect(Collectors.toSet());
 
-        // Sets the order tracking number to cart object
-        cart.setOrderTrackingNumber(orderTrackingNumber);
-        // Message for testing purposes - System.out.println(cart.getOrderTrackingNumber());
+                for (Long excursionId : excursionIds) {
+                    Excursion excursion = excursionRepository.findById(excursionId)
+                            .orElse(null);
+                    
+                    if (excursion == null) {
+                        log.warn("Excursion not found: {}", excursionId);
+                        return PurchaseResponse.error("EXCURSION_NOT_FOUND",
+                            "One or more excursions are no longer available.");
+                    }
 
-        // Sets the status type of cart to ordered
+                    // Validate excursion belongs to vacation
+                    if (excursion.getVacation() == null || 
+                        !excursion.getVacation().getId().equals(vacation.getId())) {
+                        log.warn("Excursion {} does not belong to vacation {}", 
+                            excursionId, vacation.getId());
+                        return PurchaseResponse.error("EXCURSION_VACATION_MISMATCH",
+                            "Selected excursions must belong to the vacation package.");
+                    }
+
+                    excursions.add(excursion);
+                }
+            }
+
+            // Create cart item
+            CartItem cartItem = new CartItem();
+            cartItem.setVacation(vacation);
+            cartItem.setExcursions(excursions);
+            cartItems.add(cartItem);
+
+            // Compute total server-side
+            serverComputedTotal = serverComputedTotal.add(calculateItemTotal(vacation, excursions));
+        }
+
+        // Validate client-submitted total matches server computation (within tolerance)
+        BigDecimal clientTotal = purchase.getCart().getPackage_price();
+        if (clientTotal != null && serverComputedTotal.compareTo(clientTotal) != 0) {
+            BigDecimal tolerance = new BigDecimal("0.01");
+            if (serverComputedTotal.subtract(clientTotal).abs().compareTo(tolerance) > 0) {
+                log.warn("Total mismatch - client: {}, server: {}", clientTotal, serverComputedTotal);
+                return PurchaseResponse.error("TOTAL_MISMATCH",
+                    "Cart total has changed. Please refresh and try again.");
+            }
+        }
+
+        // Build customer entity
+        Customer customer = new Customer();
+        customer.setFirstName(purchase.getCustomer().getFirstName());
+        customer.setLastName(purchase.getCustomer().getLastName());
+        customer.setAddress(purchase.getCustomer().getAddress());
+        customer.setPostal_code(purchase.getCustomer().getPostal_code());
+        customer.setPhone(purchase.getCustomer().getPhone());
+        customer.setDivision(division);
+
+        // Build cart entity
+        Cart cart = new Cart();
+        cart.setPackage_price(serverComputedTotal);
+        cart.setParty_size(purchase.getCart().getParty_size());
         cart.setStatus(StatusType.ordered);
-        // Message for testing purposes - System.out.println(cart.getStatus());
-
-        // Sets the saved customer object to cart as well as cart items
+        cart.setOrderTrackingNumber(generateOrderTrackingNumber());
         cart.setCustomer(customer);
+
+        // Link cart items to cart
+        cartItems.forEach(item -> item.setCart(cart));
         cart.setCartItems(cartItems);
 
-        // Saves cart to cart repository.
+        // Persist
         cartRepository.save(cart);
 
-        // Returns purchase response with order tracking number
-        return PurchaseResponse.success(orderTrackingNumber);
+        log.info("Order placed successfully: {}", cart.getOrderTrackingNumber());
+        return PurchaseResponse.success(cart.getOrderTrackingNumber());
     }
 
-    // Helper method to generate an order tracking number
     private String generateOrderTrackingNumber() {
         return UUID.randomUUID().toString();
+    }
+
+    private BigDecimal calculateItemTotal(Vacation vacation, Set<Excursion> excursions) {
+        BigDecimal total = vacation.getTravel_price() != null 
+            ? vacation.getTravel_price() 
+            : BigDecimal.ZERO;
+
+        if (excursions != null) {
+            for (Excursion excursion : excursions) {
+                BigDecimal price = excursion.getExcursion_price();
+                if (price != null) {
+                    total = total.add(price);
+                }
+            }
+        }
+
+        return total;
     }
 }
