@@ -47,8 +47,8 @@ public class Cart {
 
     // Relationship fields
     // Many carts can belong to one customer
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
 
     // One cart can have many cart items

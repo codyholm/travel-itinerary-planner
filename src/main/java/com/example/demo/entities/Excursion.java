@@ -43,7 +43,7 @@ public class Excursion {
     // Relationship fields
     // One excursion can belong to one vacation
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vacation_id")
+    @JoinColumn(name = "vacation_id", nullable = false)
     private Vacation vacation;
 
     @ManyToMany(mappedBy = "excursions")

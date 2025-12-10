@@ -35,8 +35,8 @@ public class Division {
 
     // Relationship fields
     // Many divisions can belong to one country
-    @ManyToOne
-    @JoinColumn(name = "country_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "country_id", nullable = false)
     private Country country;
 
     // One division can belong to many customers

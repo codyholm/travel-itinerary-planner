@@ -38,7 +38,7 @@ public class CartItem {
     private Cart cart;
 
     // Many cart items can belong to one vacation
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vacation_id", nullable = false)
     private Vacation vacation;
 
