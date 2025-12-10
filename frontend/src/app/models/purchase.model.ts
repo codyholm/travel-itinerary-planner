@@ -16,5 +16,6 @@ export interface PurchaseCartItem {
 export interface PurchaseResponse {
   success: boolean;
   orderTrackingNumber: string | null;
+  errorCode?: string | null;
   errorMessage: string | null;
 }
