@@ -5,12 +5,13 @@ import { map } from 'rxjs/operators';
 import { Purchase, PurchaseResponse } from '../models/purchase.model';
 import { Country } from '../models/location.model';
 import { Division } from '../models/location.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CheckoutService {
-  private apiUrl = 'http://localhost:8080/api';
+  private apiUrl = environment.apiBaseUrl;
 
   constructor(private http: HttpClient) { }
 

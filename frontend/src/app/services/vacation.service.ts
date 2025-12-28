@@ -4,12 +4,13 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Vacation } from '../models/vacation.model';
 import { Excursion } from '../models/excursion.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VacationService {
-  private apiUrl = 'http://localhost:8080/api';
+  private apiUrl = environment.apiBaseUrl;
 
   constructor(private http: HttpClient) { }
 
