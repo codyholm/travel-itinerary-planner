@@ -3,6 +3,6 @@ export interface Excursion {
   excursion_title: string;
   excursion_price: number;
   image_URL: string;
-  create_date: string;
-  last_update: string;
+  create_date?: string;
+  last_update?: string;
 }

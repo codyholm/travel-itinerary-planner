@@ -50,7 +50,7 @@
           <div class="mt-auto d-flex justify-content-between align-items-center gap-3">
             <span class="meta-pill">
               <i class="bi bi-stars"></i>
-              {{ vacation.excursions?.length || 0 }} excursions
+              {{ vacation.excursions_count ?? vacation.excursions?.length ?? 0 }} excursions
             </span>
             <a [routerLink]="['/vacations', vacation.id]" class="btn btn-primary btn-sm">
               View details

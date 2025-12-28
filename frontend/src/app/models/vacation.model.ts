@@ -6,7 +6,8 @@ export interface Vacation {
   description: string;
   travel_price: number;
   image_URL: string;
-  create_date: string;
-  last_update: string;
+  create_date?: string;
+  last_update?: string;
   excursions?: Excursion[];
+  excursions_count?: number;
 }

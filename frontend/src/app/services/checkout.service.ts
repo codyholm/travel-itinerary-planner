@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { Purchase, PurchaseResponse } from '../models/purchase.model';
 import { Country } from '../models/location.model';
 import { Division } from '../models/location.model';
@@ -20,17 +19,10 @@ export class CheckoutService {
   }
 
   getCountries(): Observable<Country[]> {
-    return this.http.get<{ _embedded: { countries: Country[] } }>(`${this.apiUrl}/countries`)
-      .pipe(
-        map(response => response._embedded.countries)
-      );
+    return this.http.get<Country[]>(`${this.apiUrl}/countries`);
   }
 
   getDivisionsByCountry(countryId: number): Observable<Division[]> {
-    return this.http.get<{ _embedded: { divisions: Division[] } }>(
-      `${this.apiUrl}/divisions/search/findByCountryId?countryId=${countryId}`
-    ).pipe(
-      map(response => response._embedded.divisions)
-    );
+    return this.http.get<Division[]>(`${this.apiUrl}/divisions?countryId=${countryId}`);
   }
 }

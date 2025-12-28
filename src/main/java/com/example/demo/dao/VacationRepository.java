@@ -2,7 +2,12 @@ package com.example.demo.dao;
 
 import com.example.demo.entities.Vacation;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
+import org.springframework.data.jpa.repository.EntityGraph;
 
-@RepositoryRestResource
-public interface VacationRepository extends JpaRepository<Vacation, Long> {}
+import java.util.List;
+
+public interface VacationRepository extends JpaRepository<Vacation, Long> {
+
+    @EntityGraph(attributePaths = "excursions")
+    List<Vacation> findAllWithExcursions();
+}
