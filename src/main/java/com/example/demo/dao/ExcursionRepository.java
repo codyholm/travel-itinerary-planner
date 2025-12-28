@@ -11,4 +11,6 @@ public interface ExcursionRepository extends JpaRepository<Excursion, Long> {
      * Find all excursions for a vacation.
      */
     List<Excursion> findByVacationId(Long vacationId);
+
+    long countByVacationId(Long vacationId);
 }
