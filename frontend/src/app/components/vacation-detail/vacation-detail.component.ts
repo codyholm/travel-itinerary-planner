@@ -8,11 +8,10 @@ import { Vacation } from '../../models/vacation.model';
 import { Excursion } from '../../models/excursion.model';
 
 @Component({
-  selector: 'app-vacation-detail',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './vacation-detail.component.html',
-  styleUrl: './vacation-detail.component.scss'
+    selector: 'app-vacation-detail',
+    imports: [CommonModule, FormsModule],
+    templateUrl: './vacation-detail.component.html',
+    styleUrl: './vacation-detail.component.scss'
 })
 export class VacationDetailComponent implements OnInit {
   vacation: Vacation | null = null;

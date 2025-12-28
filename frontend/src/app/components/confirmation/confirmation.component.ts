@@ -3,11 +3,10 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-confirmation',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './confirmation.component.html',
-  styleUrl: './confirmation.component.scss'
+    selector: 'app-confirmation',
+    imports: [CommonModule],
+    templateUrl: './confirmation.component.html',
+    styleUrl: './confirmation.component.scss'
 })
 export class ConfirmationComponent implements OnInit {
   orderTrackingNumber: string | null = null;

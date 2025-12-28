@@ -5,11 +5,10 @@ import { VacationService } from '../../services/vacation.service';
 import { Vacation } from '../../models/vacation.model';
 
 @Component({
-  selector: 'app-vacation-list',
-  standalone: true,
-  imports: [CommonModule, RouterLink],
-  templateUrl: './vacation-list.component.html',
-  styleUrl: './vacation-list.component.scss'
+    selector: 'app-vacation-list',
+    imports: [CommonModule, RouterLink],
+    templateUrl: './vacation-list.component.html',
+    styleUrl: './vacation-list.component.scss'
 })
 export class VacationListComponent implements OnInit {
   vacations: Vacation[] = [];
