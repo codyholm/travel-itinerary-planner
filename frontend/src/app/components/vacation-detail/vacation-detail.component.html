@@ -17,8 +17,8 @@
   <div *ngIf="!loading && !errorMessage && vacation">
     <div class="row mb-4">
       <div class="col">
-        <a href="/" class="btn btn-outline-secondary mb-3">
-          <i class="bi bi-arrow-left me-2"></i>Back to Vacations
+        <a routerLink="/" class="btn btn-outline-secondary btn-sm mb-3">
+          <i class="bi bi-arrow-left me-2"></i>Back to Browse
         </a>
       </div>
     </div>
@@ -26,73 +26,85 @@
     <div class="row">
       <!-- Vacation Image and Info -->
       <div class="col-lg-6 mb-4">
-        <img 
-          [src]="vacation.image_URL" 
-          [alt]="vacation.vacation_title"
-          class="img-fluid rounded shadow vacation-image"
-          onerror="this.src='https://via.placeholder.com/600x400?text=Vacation+Image'"
-        >
-        <div class="mt-4">
-          <h1 class="display-5">{{ vacation.vacation_title }}</h1>
-          <p class="text-muted">{{ vacation.description || 'Experience an unforgettable journey' }}</p>
-          <div class="card bg-light border-0 mt-3">
-            <div class="card-body">
-              <h4 class="text-primary mb-0">${{ vacation.travel_price | number:'1.2-2' }}</h4>
-              <small class="text-muted">Base package price</small>
+        <div class="media-card">
+          <img 
+            [src]="vacation.image_URL" 
+            [alt]="vacation.vacation_title"
+            class="vacation-image"
+            onerror="this.src='https://via.placeholder.com/600x400?text=Vacation+Image'"
+          >
+          <div class="media-wash" aria-hidden="true"></div>
+          <div class="media-caption">
+            <p class="kicker mb-1">Package</p>
+            <h1 class="title mb-2">{{ vacation.vacation_title }}</h1>
+            <p class="subtitle mb-0">{{ vacation.description || 'A carefully paced escape with room for your own detours.' }}</p>
+          </div>
+        </div>
+
+        <div class="card mt-4 price-card">
+          <div class="card-body d-flex align-items-end justify-content-between gap-3">
+            <div>
+              <p class="kicker mb-1">Base price</p>
+              <p class="mb-0 text-muted">Per package, before excursions.</p>
             </div>
+            <div class="base-price">${{ vacation.travel_price | number:'1.2-2' }}</div>
           </div>
         </div>
       </div>
 
       <!-- Excursions Selection -->
       <div class="col-lg-6">
-        <div class="card shadow-sm">
-          <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">
-              <i class="bi bi-list-check me-2"></i>Select Excursions
-            </h4>
-          </div>
-          <div class="card-body">
-            <p class="text-muted mb-3">Enhance your vacation with exciting excursions</p>
+        <div class="card">
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-between align-items-start gap-3 mb-3">
+              <div>
+                <h2 class="section-title mb-1">Excursions</h2>
+                <p class="text-muted mb-0">Add a few highlights to shape the pace.</p>
+              </div>
+              <span class="meta-pill">
+                <i class="bi bi-check2"></i>
+                {{ selectedExcursions.size }} selected
+              </span>
+            </div>
             
             <div *ngIf="excursions.length === 0" class="text-center py-4 text-muted">
               No excursions available for this vacation
             </div>
 
             <div class="excursions-list">
-              <div *ngFor="let excursion of excursions" class="form-check excursion-item p-3 mb-2 rounded">
-                <input 
-                  class="form-check-input" 
-                  type="checkbox" 
-                  [id]="'excursion-' + excursion.id"
-                  [checked]="isExcursionSelected(excursion.id!)"
-                  (change)="toggleExcursion(excursion.id!)"
-                >
-                <label class="form-check-label w-100" [for]="'excursion-' + excursion.id">
-                  <div class="d-flex justify-content-between align-items-start">
-                    <div>
-                      <strong>{{ excursion.excursion_title }}</strong>
-                    </div>
-                    <span class="badge bg-success ms-2">${{ excursion.excursion_price | number:'1.2-2' }}</span>
+              <div *ngFor="let excursion of excursions" class="excursion-row">
+                <label class="excursion-card" [for]="'excursion-' + excursion.id">
+                  <input 
+                    class="excursion-check" 
+                    type="checkbox" 
+                    [id]="'excursion-' + excursion.id"
+                    [checked]="isExcursionSelected(excursion.id!)"
+                    (change)="toggleExcursion(excursion.id!)"
+                  >
+                  <div class="excursion-body">
+                    <p class="excursion-title mb-1">{{ excursion.excursion_title }}</p>
+                    <p class="excursion-meta mb-0">Add-on experience</p>
                   </div>
+                  <div class="excursion-price">${{ excursion.excursion_price | number:'1.2-2' }}</div>
                 </label>
               </div>
             </div>
 
             <!-- Total and Add to Cart -->
-            <div class="card bg-light border-0 mt-4">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <span class="h5 mb-0">Total Price:</span>
-                  <span class="h4 mb-0 text-primary">${{ getTotal() | number:'1.2-2' }}</span>
+            <div class="total-panel mt-4">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                  <p class="kicker mb-1">Total</p>
+                  <p class="text-muted mb-0">Base + selected excursions</p>
                 </div>
-                <button 
-                  class="btn btn-primary btn-lg w-100"
-                  (click)="addToCart()"
-                >
-                  <i class="bi bi-cart-plus me-2"></i>Add to Cart
-                </button>
+                <div class="total-amount">${{ getTotal() | number:'1.2-2' }}</div>
               </div>
+              <button 
+                class="btn btn-primary btn-lg w-100"
+                (click)="addToCart()"
+              >
+                <i class="bi bi-cart-plus me-2"></i>Add to cart
+              </button>
             </div>
           </div>
         </div>

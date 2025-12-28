@@ -1,37 +1,131 @@
+.hero {
+  display: grid;
+  place-items: center;
+}
+
+.hero-frame {
+  width: min(980px, 100%);
+  padding: clamp(1.4rem, 3vw, 2.3rem);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(14, 27, 30, 0.10);
+  background:
+    radial-gradient(1200px 520px at 10% 10%, rgba(143, 218, 214, 0.18), transparent 50%),
+    radial-gradient(900px 560px at 90% 0%, rgba(255, 107, 74, 0.12), transparent 55%),
+    rgba(255, 249, 242, 0.72);
+  box-shadow: var(--shadow-2);
+}
+
+.hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(14, 27, 30, 0.66);
+}
+
+.hero-kicker::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: rgba(14, 27, 30, 0.26);
+}
+
+.hero-title {
+  font-size: clamp(2.3rem, 5vw, 3.75rem);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+
+.hero-subtitle {
+  width: min(66ch, 100%);
+  color: rgba(14, 27, 30, 0.68);
+  font-size: 1.08rem;
+  line-height: 1.55;
+}
+
+.reveal {
+  animation: reveal-up 720ms var(--ease-out) both;
+}
+
 .vacation-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-  border: none;
-  
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
-  }
+  overflow: hidden;
+  transition: transform var(--motion-mid) var(--ease-out);
 }
 
-.vacation-image {
-  height: 250px;
+.vacation-card:hover {
+  transform: translateY(-6px);
+}
+
+.vacation-card__media {
+  position: relative;
+  height: 248px;
+  background: rgba(14, 27, 30, 0.04);
+}
+
+.vacation-card__image {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  background-color: #f0f0f0;
+  filter: saturate(1.04) contrast(1.02);
 }
 
-.price {
-  color: #0D7377;
-  font-weight: 600;
+.vacation-card__wash {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(14, 27, 30, 0.06), rgba(14, 27, 30, 0.36) 88%);
 }
 
-.card-title {
-  color: #212121;
-  font-weight: 600;
-  margin-bottom: 0.75rem;
+.vacation-card__price {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 999px;
+  background: rgba(255, 249, 242, 0.92);
+  border: 1px solid rgba(14, 27, 30, 0.10);
+  box-shadow: 0 12px 34px rgba(14, 27, 30, 0.22);
 }
 
-.btn-primary {
-  background-color: #0D7377;
-  border-color: #0D7377;
-  
-  &:hover {
-    background-color: #0a5a5d;
-    border-color: #0a5a5d;
-  }
+.vacation-card__price-label {
+  font-size: 0.78rem;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(14, 27, 30, 0.56);
+}
+
+.vacation-card__price-value {
+  font-family: var(--font-display);
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  color: var(--color-teal);
+}
+
+.vacation-card__title {
+  font-family: var(--font-display);
+  font-weight: 650;
+  letter-spacing: -0.03em;
+}
+
+.vacation-card__desc {
+  color: rgba(14, 27, 30, 0.68);
+  line-height: 1.55;
+}
+
+.meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(14, 27, 30, 0.12);
+  color: rgba(14, 27, 30, 0.72);
+  background: rgba(255, 249, 242, 0.62);
+  font-size: 0.92rem;
 }

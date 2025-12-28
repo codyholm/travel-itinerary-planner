@@ -1,10 +1,13 @@
 <div class="container py-5">
-  <div class="row mb-4">
-    <div class="col">
-      <h1 class="display-4 text-center mb-2">Explore Vacation Packages</h1>
-      <p class="text-center text-muted">Discover your next adventure</p>
+  <section class="hero mb-5">
+    <div class="hero-frame">
+      <p class="hero-kicker mb-2">Curated departures</p>
+      <h1 class="hero-title mb-3">Explore vacation packages</h1>
+      <p class="hero-subtitle mb-0">
+        Build an itinerary with sea-salt air, museum light, and late-night streets. Choose your extras; keep it yours.
+      </p>
     </div>
-  </div>
+  </section>
 
   <!-- Loading State -->
   <div *ngIf="loading" class="text-center py-5">
@@ -22,28 +25,39 @@
 
   <!-- Vacations Grid -->
   <div *ngIf="!loading && !errorMessage" class="row g-4">
-    <div *ngFor="let vacation of vacations" class="col-md-6 col-lg-4">
-      <div class="card h-100 shadow-sm vacation-card">
-        <img 
-          [src]="vacation.image_URL" 
-          [alt]="vacation.vacation_title"
-          class="card-img-top vacation-image"
-          onerror="this.src='https://via.placeholder.com/400x250?text=Vacation+Image'"
-        >
+    <div *ngFor="let vacation of vacations; let i = index" class="col-md-6 col-lg-4">
+      <article class="vacation-card card h-100 reveal" [style.animationDelay.ms]="i * 60">
+        <div class="vacation-card__media">
+          <img
+            [src]="vacation.image_URL"
+            [alt]="vacation.vacation_title"
+            class="vacation-card__image"
+            onerror="this.src='https://via.placeholder.com/400x250?text=Vacation+Image'"
+          >
+          <div class="vacation-card__wash" aria-hidden="true"></div>
+          <div class="vacation-card__price">
+            <span class="vacation-card__price-label">From</span>
+            <span class="vacation-card__price-value">${{ vacation.travel_price | number:'1.0-0' }}</span>
+          </div>
+        </div>
+
         <div class="card-body d-flex flex-column">
-          <h5 class="card-title">{{ vacation.vacation_title }}</h5>
-          <p class="card-text text-muted small mb-3">{{ vacation.description || 'Explore this amazing destination' }}</p>
-          <div class="mt-auto">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <span class="price h4 mb-0">${{ vacation.travel_price | number:'1.2-2' }}</span>
-              <span class="badge bg-secondary">{{ vacation.excursions?.length || 0 }} Excursions</span>
-            </div>
-            <a [routerLink]="['/vacations', vacation.id]" class="btn btn-primary w-100">
-              <i class="bi bi-eye me-2"></i>View Details
+          <h3 class="vacation-card__title mb-2">{{ vacation.vacation_title }}</h3>
+          <p class="vacation-card__desc mb-4">
+            {{ vacation.description || 'A carefully paced escape with room for your own detours.' }}
+          </p>
+
+          <div class="mt-auto d-flex justify-content-between align-items-center gap-3">
+            <span class="meta-pill">
+              <i class="bi bi-stars"></i>
+              {{ vacation.excursions?.length || 0 }} excursions
+            </span>
+            <a [routerLink]="['/vacations', vacation.id]" class="btn btn-primary btn-sm">
+              View details
             </a>
           </div>
         </div>
-      </div>
+      </article>
     </div>
   </div>
 

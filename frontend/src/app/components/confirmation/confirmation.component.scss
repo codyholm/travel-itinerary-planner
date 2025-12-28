@@ -1,6 +1,10 @@
 .confirmation-card {
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  background:
+    radial-gradient(900px 480px at 18% 0%, rgba(143, 218, 214, 0.18), transparent 55%),
+    radial-gradient(900px 520px at 82% -20%, rgba(255, 107, 74, 0.12), transparent 58%),
+    rgba(255, 249, 242, 0.78);
   margin-top: 2rem;
+  border: 1px solid rgba(14, 27, 30, 0.10);
 }
 
 .success-icon {
@@ -23,33 +27,23 @@
 }
 
 .tracking-number-box {
-  background-color: #f0f8f9;
-  border: 2px dashed #0D7377;
+  background-color: rgba(255, 249, 242, 0.88);
+  border: 2px dashed rgba(13, 94, 99, 0.55);
   border-radius: 8px;
 }
 
 .tracking-number {
-  font-family: 'Courier New', monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   letter-spacing: 2px;
   font-weight: 600;
 }
 
 .text-primary {
-  color: #0D7377 !important;
-}
-
-.btn-primary {
-  background-color: #0D7377;
-  border-color: #0D7377;
-  
-  &:hover {
-    background-color: #0a5a5d;
-    border-color: #0a5a5d;
-  }
+  color: var(--color-teal) !important;
 }
 
 .alert-info {
-  background-color: #e7f6f7;
-  border-color: #0D7377;
-  color: #0a5a5d;
+  background-color: rgba(143, 218, 214, 0.16);
+  border-color: rgba(13, 94, 99, 0.22);
+  color: rgba(14, 27, 30, 0.78);
 }

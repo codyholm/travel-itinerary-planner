@@ -1,11 +1,10 @@
 <div class="container py-5">
-  <div class="row mb-4">
-    <div class="col">
-      <h1 class="display-5">
-        <i class="bi bi-cart3 me-2"></i>Shopping Cart
-      </h1>
-    </div>
-  </div>
+  <header class="page-header mb-4">
+    <p class="kicker mb-2">Your selections</p>
+    <h1 class="page-title mb-0">
+      <i class="bi bi-cart3 me-2"></i>Cart
+    </h1>
+  </header>
 
   <!-- Empty Cart State -->
   <div *ngIf="cartItems.length === 0" class="text-center py-5">
@@ -25,20 +24,23 @@
           <div class="card-body">
             <div class="row">
               <div class="col-md-3">
-                <img 
-                  [src]="item.vacation.image_URL" 
-                  [alt]="item.vacation.vacation_title"
-                  class="img-fluid rounded"
-                  onerror="this.src='https://via.placeholder.com/200x150?text=Vacation'"
-                >
+                <div class="thumb">
+                  <img 
+                    [src]="item.vacation.image_URL" 
+                    [alt]="item.vacation.vacation_title"
+                    class="thumb-img"
+                    onerror="this.src='https://via.placeholder.com/200x150?text=Vacation'"
+                  >
+                  <div class="thumb-wash" aria-hidden="true"></div>
+                </div>
               </div>
               <div class="col-md-6">
-                <h5 class="card-title">{{ item.vacation.vacation_title }}</h5>
+                <h3 class="item-title mb-2">{{ item.vacation.vacation_title }}</h3>
                 <p class="text-muted mb-2">
-                  <strong>Base Price:</strong> ${{ item.vacation.travel_price | number:'1.2-2' }}
+                  Base ${{ item.vacation.travel_price | number:'1.2-2' }}
                 </p>
                 <div *ngIf="item.excursions.length > 0" class="excursions-summary">
-                  <p class="mb-1"><strong>Selected Excursions:</strong></p>
+                  <p class="mb-1"><strong>Excursions</strong></p>
                   <ul class="list-unstyled ms-3">
                     <li *ngFor="let excursion of item.excursions" class="text-muted small">
                       <i class="bi bi-check2 text-success me-1"></i>
@@ -55,7 +57,7 @@
                 </div>
               </div>
               <div class="col-md-3 text-end">
-                <h4 class="text-primary mb-3">${{ getItemTotal(item) | number:'1.2-2' }}</h4>
+                <div class="item-total mb-3">${{ getItemTotal(item) | number:'1.2-2' }}</div>
                 <button 
                   class="btn btn-outline-danger btn-sm"
                   (click)="removeItem(item.vacation.id!)"
@@ -70,11 +72,9 @@
 
       <!-- Order Summary -->
       <div class="col-lg-4">
-        <div class="card shadow-sm sticky-summary">
-          <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">Order Summary</h5>
-          </div>
-          <div class="card-body">
+        <div class="card sticky-summary summary-panel">
+          <div class="card-body p-4">
+            <h2 class="summary-title mb-3">Summary</h2>
             <div class="d-flex justify-content-between mb-2">
               <span>Items:</span>
               <span>{{ cartItems.length }}</span>
@@ -82,7 +82,7 @@
             <hr>
             <div class="d-flex justify-content-between mb-3">
               <strong>Total:</strong>
-              <strong class="h4 text-primary mb-0">${{ total | number:'1.2-2' }}</strong>
+              <strong class="summary-total mb-0">${{ total | number:'1.2-2' }}</strong>
             </div>
             <button 
               class="btn btn-primary btn-lg w-100 mb-2"
