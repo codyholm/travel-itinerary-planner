@@ -48,6 +48,21 @@
             </div>
 
             <div class="mb-3">
+              <label for="email" class="form-label">Email *</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                formControlName="email"
+                [class.is-invalid]="isFieldInvalid('email')"
+                placeholder="you@example.com"
+              >
+              <div class="invalid-feedback">
+                Please enter a valid email address
+              </div>
+            </div>
+
+            <div class="mb-3">
               <label for="address" class="form-label">Street Address *</label>
               <input 
                 type="text" 

@@ -33,8 +33,14 @@ public class Customer {
     @Column(name = "address")
     private String address;
 
+    @Column(name = "city", nullable = false)
+    private String city;
+
     @Column(name = "postal_code")
     private String postal_code;
+
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
 
     @Column(name = "phone")
     private String phone;

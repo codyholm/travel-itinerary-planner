@@ -56,16 +56,16 @@ public class BootStrapData implements CommandLineRunner {
         Division jackDiv = divisionRepository.findById(101L).orElse(null);
 
         // Create sample customers
-        createCustomer("Jane", "Doe", "123 Main St", janeDiv);
-        createCustomer("Clark", "Kent", "456 Main St", clarkDiv);
-        createCustomer("Bruce", "Wayne", "789 Gotham St", bruceDiv);
-        createCustomer("Peter", "Parker", "1010 Main St", peterDiv);
-        createCustomer("Jack", "Sparrow", "1234 Main St", jackDiv);
+        createCustomer("Jane", "Doe", "jane.doe@example.com", "123 Main St", "Seattle", janeDiv);
+        createCustomer("Clark", "Kent", "clark.kent@example.com", "456 Main St", "Metropolis", clarkDiv);
+        createCustomer("Bruce", "Wayne", "bruce.wayne@example.com", "789 Gotham St", "Gotham", bruceDiv);
+        createCustomer("Peter", "Parker", "peter.parker@example.com", "1010 Main St", "Queens", peterDiv);
+        createCustomer("Jack", "Sparrow", "jack.sparrow@example.com", "1234 Main St", "Port Royal", jackDiv);
 
         log.info("Bootstrap complete; created {} sample customers", customerRepository.count());
     }
 
-    private void createCustomer(String firstName, String lastName, String address, Division division) {
+    private void createCustomer(String firstName, String lastName, String email, String address, String city, Division division) {
         if (division == null) {
             log.error("Cannot create customer {} {} because division is null", firstName, lastName);
             return;
@@ -74,9 +74,11 @@ public class BootStrapData implements CommandLineRunner {
         Customer customer = new Customer();
         customer.setFirstName(firstName);
         customer.setLastName(lastName);
+        customer.setEmail(email);
         customer.setAddress(address);
+        customer.setCity(city);
         customer.setPostal_code("12345");
-        customer.setPhone("123-456-7890");
+        customer.setPhone("1234567890");
         customer.setDivision(division);
         customerRepository.save(customer);
         log.debug("Created customer: {} {}", firstName, lastName);

@@ -1,6 +1,6 @@
 package com.example.demo.services;
 
-import com.example.demo.dao.CartRepository;
+import com.example.demo.dao.CustomerRepository;
 import com.example.demo.dao.DivisionRepository;
 import com.example.demo.dao.ExcursionRepository;
 import com.example.demo.dao.VacationRepository;
@@ -28,17 +28,17 @@ public class CheckoutServiceImpl implements CheckoutService {
 
     private static final Logger log = LoggerFactory.getLogger(CheckoutServiceImpl.class);
 
-    private final CartRepository cartRepository;
+    private final CustomerRepository customerRepository;
     private final DivisionRepository divisionRepository;
     private final VacationRepository vacationRepository;
     private final ExcursionRepository excursionRepository;
 
     public CheckoutServiceImpl(
-            CartRepository cartRepository,
+            CustomerRepository customerRepository,
             DivisionRepository divisionRepository,
             VacationRepository vacationRepository,
             ExcursionRepository excursionRepository) {
-        this.cartRepository = cartRepository;
+        this.customerRepository = customerRepository;
         this.divisionRepository = divisionRepository;
         this.vacationRepository = vacationRepository;
         this.excursionRepository = excursionRepository;
@@ -130,11 +130,23 @@ public class CheckoutServiceImpl implements CheckoutService {
             }
         }
 
-        // Build customer entity
-        Customer customer = new Customer();
+        // Find existing customer by email (merge) or create a new one
+        String normalizedEmail = purchase.getCustomer().getEmail() == null
+                ? ""
+                : purchase.getCustomer().getEmail().trim();
+
+        if (normalizedEmail.isEmpty()) {
+            return PurchaseResponse.error("EMAIL_REQUIRED", "Email is required.");
+        }
+
+        Customer customer = customerRepository.findByEmailIgnoreCase(normalizedEmail)
+                .orElseGet(Customer::new);
+
+        customer.setEmail(normalizedEmail);
         customer.setFirstName(purchase.getCustomer().getFirstName());
         customer.setLastName(purchase.getCustomer().getLastName());
         customer.setAddress(purchase.getCustomer().getAddress());
+        customer.setCity(purchase.getCustomer().getCity());
         customer.setPostal_code(purchase.getCustomer().getPostal_code());
         customer.setPhone(purchase.getCustomer().getPhone());
         customer.setDivision(division);
@@ -145,14 +157,14 @@ public class CheckoutServiceImpl implements CheckoutService {
         cart.setParty_size(purchase.getCart().getParty_size());
         cart.setStatus(StatusType.ordered);
         cart.setOrderTrackingNumber(generateOrderTrackingNumber());
-        cart.setCustomer(customer);
 
         // Link cart items to cart
         cartItems.forEach(item -> item.setCart(cart));
         cart.setCartItems(cartItems);
 
         // Persist
-        cartRepository.save(cart);
+        customer.add(cart);
+        customerRepository.save(customer);
 
         log.info("Order placed successfully: {}", cart.getOrderTrackingNumber());
         return PurchaseResponse.success(cart.getOrderTrackingNumber());

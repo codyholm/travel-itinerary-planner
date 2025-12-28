@@ -45,6 +45,8 @@ CREATE TABLE `excursions` (
 CREATE TABLE `customers` (
     `customer_id` bigint NOT NULL AUTO_INCREMENT,
     `address` varchar(255) DEFAULT NULL,
+    `city` varchar(255) NOT NULL,
+    `email` varchar(255) NOT NULL,
     `create_date` datetime(6) DEFAULT NULL,
     `customer_first_name` varchar(255) DEFAULT NULL,
     `customer_last_name` varchar(255) DEFAULT NULL,
@@ -53,6 +55,7 @@ CREATE TABLE `customers` (
     `postal_code` varchar(255) DEFAULT NULL,
     `division_id` bigint DEFAULT NULL,
     PRIMARY KEY (`customer_id`),
+    UNIQUE KEY `uk_customers_email` (`email`),
     KEY (`division_id`),
     CONSTRAINT FOREIGN KEY (`division_id`) REFERENCES `divisions` (`division_id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
