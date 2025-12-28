@@ -1,100 +1,201 @@
-// Custom color palette - Travel/Ocean theme
-$primary: #0D7377;
-$secondary: #14FFEC;
-$dark: #212121;
-$light: #F8F9FA;
-$success: #28A745;
-$danger: #DC3545;
-$warning: #FFC107;
-$info: #17A2B8;
+:root {
+  --color-ink: #0e1b1e;
+  --color-slate: #66767c;
+  --color-teal: #0d5e63;
+  --color-seafoam: #8fdad6;
+  --color-coral: #ff6b4a;
+  --color-sand: #f6efe7;
+  --color-shell: #fff9f2;
+  --color-mist: #e5eceb;
 
-// Global styles
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-body: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --fs-900: 3.75rem;
+  --fs-800: 3rem;
+  --fs-700: 2.25rem;
+  --fs-600: 1.75rem;
+  --fs-500: 1.375rem;
+  --fs-400: 1.125rem;
+  --fs-300: 1rem;
+  --fs-200: 0.875rem;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+
+  --shadow-1: 0 1px 2px rgba(14, 27, 30, 0.06), 0 6px 18px rgba(14, 27, 30, 0.08);
+  --shadow-2: 0 2px 8px rgba(14, 27, 30, 0.10), 0 18px 50px rgba(14, 27, 30, 0.14);
+
+  --motion-fast: 180ms;
+  --motion-mid: 260ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --grain-opacity: 0.06;
+
+  --bs-body-font-family: var(--font-body);
+  --bs-body-color: var(--color-ink);
+  --bs-body-bg: var(--color-sand);
+
+  --bs-primary: var(--color-teal);
+  --bs-primary-rgb: 13, 94, 99;
+  --bs-secondary: var(--color-seafoam);
+  --bs-secondary-rgb: 143, 218, 214;
+  --bs-danger: var(--color-coral);
+  --bs-danger-rgb: 255, 107, 74;
+
+  --bs-border-color: var(--color-mist);
+  --bs-link-color: var(--color-teal);
+  --bs-link-hover-color: #09494d;
+  --bs-focus-ring-color: rgba(255, 107, 74, 0.35);
+}
+
+html,
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: $light;
-  color: $dark;
+  height: 100%;
+}
+
+body {
   min-height: 100vh;
+  background-color: var(--color-sand);
+  color: var(--color-ink);
+  font-size: var(--fs-300);
+  letter-spacing: -0.01em;
 }
 
-// Custom utility classes
-.bg-primary-custom {
-  background-color: $primary !important;
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(900px 520px at 18% -5%, rgba(143, 218, 214, 0.25), transparent 60%),
+    radial-gradient(900px 560px at 82% 10%, rgba(255, 107, 74, 0.10), transparent 58%),
+    radial-gradient(1200px 860px at 60% 100%, rgba(13, 94, 99, 0.12), transparent 62%),
+    linear-gradient(180deg, var(--color-sand), var(--color-shell) 55%, var(--color-sand));
 }
 
-.text-primary-custom {
-  color: $primary !important;
+body::after {
+  content: "";
+  position: fixed;
+  inset: -40%;
+  z-index: -1;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  transform: rotate(8deg);
+  mix-blend-mode: multiply;
 }
 
-.btn-primary-custom {
-  background-color: $primary;
-  border-color: $primary;
-  color: white;
-
-  &:hover {
-    background-color: darken($primary, 10%);
-    border-color: darken($primary, 10%);
-    color: white;
-  }
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
 }
 
-.btn-outline-primary-custom {
-  border-color: $primary;
-  color: $primary;
+h1 { font-size: var(--fs-900); }
+h2 { font-size: var(--fs-800); }
+h3 { font-size: var(--fs-700); }
+h4 { font-size: var(--fs-600); }
+h5 { font-size: var(--fs-500); }
 
-  &:hover {
-    background-color: $primary;
-    color: white;
-  }
+.text-muted {
+  color: rgba(14, 27, 30, 0.62) !important;
 }
 
-// Card styles
 .card {
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  border: none;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  }
+  border: 1px solid var(--color-mist);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-1);
+  background: rgba(255, 249, 242, 0.88);
+  backdrop-filter: blur(8px);
 }
 
-// Vacation card image
-.vacation-img {
-  height: 200px;
-  object-fit: cover;
+.card:hover {
+  box-shadow: var(--shadow-2);
 }
 
-// Price styling
-.price {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: $primary;
+.btn {
+  border-radius: 999px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  transition:
+    transform var(--motion-mid) var(--ease-out),
+    box-shadow var(--motion-mid) var(--ease-out),
+    background-color var(--motion-mid) var(--ease-out),
+    border-color var(--motion-mid) var(--ease-out),
+    color var(--motion-mid) var(--ease-out);
 }
 
-// Navbar customization
-.navbar-custom {
-  background-color: $primary !important;
+.btn:active {
+  transform: translateY(1px);
 }
 
-// Footer
-.footer {
-  background-color: $dark;
-  color: white;
-  padding: 2rem 0;
-  margin-top: auto;
+.btn-primary {
+  box-shadow: 0 10px 24px rgba(13, 94, 99, 0.18);
 }
 
-// Page container
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 44px rgba(13, 94, 99, 0.22);
+}
+
+.btn-outline-secondary {
+  border-color: rgba(14, 27, 30, 0.18);
+  color: rgba(14, 27, 30, 0.78);
+}
+
+.btn-outline-secondary:hover {
+  transform: translateY(-2px);
+  border-color: rgba(14, 27, 30, 0.30);
+  color: var(--color-ink);
+}
+
+.form-control,
+.form-select {
+  border-radius: 14px;
+  border-color: rgba(14, 27, 30, 0.12);
+  background-color: rgba(255, 249, 242, 0.92);
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: rgba(255, 107, 74, 0.55);
+  box-shadow: 0 0 0 0.25rem rgba(255, 107, 74, 0.16);
+}
+
 .page-container {
   min-height: calc(100vh - 56px);
   padding-bottom: 2rem;
 }
 
-// Loading spinner
-.spinner-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
+@keyframes reveal-up {
+  0% { opacity: 0; transform: translateY(14px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float-soft {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+  100% { transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
