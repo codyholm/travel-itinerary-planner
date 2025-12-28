@@ -23,9 +23,11 @@ public class DivisionController {
     @GetMapping
     public List<DivisionOptionDTO> getDivisionsByCountry(@RequestParam("countryId") Long countryId) {
         return divisionRepository.findByCountryId(countryId).stream()
-                .sorted(Comparator.comparing(division -> division.getDivision_name().toLowerCase()))
+                .sorted(Comparator.comparing(
+                        division -> division.getDivision_name(),
+                        Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER)
+                ))
                 .map(division -> new DivisionOptionDTO(division.getId(), division.getDivision_name(), division.getCountry_id()))
                 .toList();
     }
 }
-

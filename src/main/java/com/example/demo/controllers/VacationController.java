@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/vacations")
@@ -28,9 +30,21 @@ public class VacationController {
 
     @GetMapping
     public List<VacationListItemDTO> getVacations() {
+        Map<Long, Long> excursionsCountByVacationId = excursionRepository.countExcursionsByVacationId().stream()
+                .collect(Collectors.toMap(
+                        row -> (Long) row[0],
+                        row -> ((Number) row[1]).longValue()
+                ));
+
         return vacationRepository.findAll().stream()
-                .sorted(Comparator.comparing(vacation -> vacation.getVacation_title().toLowerCase()))
-                .map(vacation -> toListItem(vacation, excursionRepository.countByVacationId(vacation.getId())))
+                .sorted(Comparator.comparing(
+                        Vacation::getVacation_title,
+                        Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER)
+                ))
+                .map(vacation -> toListItem(
+                        vacation,
+                        excursionsCountByVacationId.getOrDefault(vacation.getId(), 0L)
+                ))
                 .toList();
     }
 

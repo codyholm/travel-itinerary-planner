@@ -22,9 +22,11 @@ public class CountryController {
     @GetMapping
     public List<CountryOptionDTO> getCountries() {
         return countryRepository.findAll().stream()
-                .sorted(Comparator.comparing(country -> country.getCountry_name().toLowerCase()))
+                .sorted(Comparator.comparing(
+                        country -> country.getCountry_name(),
+                        Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER)
+                ))
                 .map(country -> new CountryOptionDTO(country.getId(), country.getCountry_name()))
                 .toList();
     }
 }
-

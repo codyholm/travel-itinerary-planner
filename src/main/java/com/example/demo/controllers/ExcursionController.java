@@ -23,7 +23,10 @@ public class ExcursionController {
     @GetMapping
     public List<ExcursionDTO> getExcursionsByVacation(@RequestParam("vacationId") Long vacationId) {
         return excursionRepository.findByVacationId(vacationId).stream()
-                .sorted(Comparator.comparing(excursion -> excursion.getExcursion_title().toLowerCase()))
+                .sorted(Comparator.comparing(
+                        excursion -> excursion.getExcursion_title(),
+                        Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER)
+                ))
                 .map(excursion -> new ExcursionDTO(
                         excursion.getId(),
                         excursion.getExcursion_title(),
@@ -33,4 +36,3 @@ public class ExcursionController {
                 .toList();
     }
 }
-
